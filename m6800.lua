@@ -25,6 +25,10 @@ resource_types = {
         commands = {
             _POWER_ON = {},
             _POWER_OFF = {},
+     	    _ALL_POWER_ON = {},
+            _ALL_POWER_OFF = {},
+      		_MAINS_POWER_ON = {},
+            _MAINS_POWER_OFF = {},
             _SET_SOURCE_ANALOG = { arguments = { _input = { type = "string", default = "1" } } },
             _SET_SOURCE_DIGITAL = { arguments = { _input = { type = "string", default = "a" } } },
             _SET_VOLUME = { arguments = { _level = { type = "float", min = 0, max = 100 } } }
@@ -32,6 +36,10 @@ resource_types = {
         events = {
             _POWER_ON = {},
             _POWER_OFF = {},
+      		_ALL_POWER_ON = {},
+            _ALL_POWER_OFF = {},
+      		_MAINS_POWER_ON = {},
+            _MAINS_POWER_OFF = {},
             _SOURCE_CHANGED = { arguments = { _input = { type = "string", default = "1" } } },
             _VOLUME_CHANGED = { arguments = { _level = { type = "float", min = 0, max = 100 } } }
         }
@@ -67,13 +75,21 @@ function executeCommand(command, resource, args)
         sendCommand("Z" .. zone .. "on")
     elseif command == "_POWER_OFF" then
         sendCommand("Z" .. zone .. "off")
+    elseif command == "_ALL_POWER_OFF" then
+        sendCommand("allZoff")
+    elseif command == "_ALL_POWER_ON" then
+        sendCommand("allZon")
+    elseif command == "_MAINS_POWER_ON" then
+        sendCommand("power1")
+    elseif command == "_MAINS_POWER_OFF" then
+        sendCommand("power0")
     elseif command == "_SET_SOURCE_ANALOG" then
         sendCommand("Z" .. zone .. "sourceMX" .. args._input)
     elseif command == "_SET_SOURCE_DIGITAL" then
         sendCommand("Z" .. zone .. "sourceDX" .. args._input)
     elseif command == "SET" then
         local volume = math.floor(args.LEVEL) -- Ensure volume is an integer
-        sendCommand("Z" .. zone .. "vol" .. volume)
+        sendCommand("Z" .. zone .. "setvol" .. volume)
     end
 end
 
